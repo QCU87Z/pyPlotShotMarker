@@ -3,14 +3,14 @@
 ## Improved script
 
 ```bash
-python3 c.py
-Usage: c.py [-h] --prefix PREFIX --distance DISTANCE [--x X] [--y Y] filename
+python3 pyPlotShotMarker.py
+Usage: pyPlotShotMarker.py [-h] --prefix PREFIX --distance DISTANCE [--x X] [--y Y] filename
 
-python3 c.py <input csv> --prefix test1
+python3 pyPlotShotMarker.py <input csv> --prefix test1
 
-python3 c.py <input csv> --distance 900 --prefix test2
+python3 pyPlotShotMarker.py <input csv> --distance 900 --prefix test2
 
-python3 c.py <input csv> --distance 900 --prefix test3 --x 250 --y 250
+python3 pyPlotShotMarker.py <input csv> --distance 900 --prefix test3 --x 250 --y 250
 ```
 
 Where `input csv` is a section of a ShotMarker shoot.
