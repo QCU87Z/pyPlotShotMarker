@@ -1,13 +1,18 @@
 # pyPlotShotMarker
 
-Modify the following variable with data from a ShotMaker CSV dump
+## Improved script
 
-```python
-x_data = [-168,158,159,-67,-15,-46,-48,-10,-12,-127,27,-77]
-y_data = [26,-19,8,-12,34,39,73,-83,47,263,157,56]
-l = ["A-5","B-5","1-5","2-6","3-X","4-X","5-6","6-6","7-X","8-4","9-5","10-6"]
-colours = ['red','red','blue','blue','blue','blue','blue','blue','blue','blue','blue','blue']
+```shell
+python3 c.py <input csv> --prefix test1
 ```
 
-Currently the grid is set to 1/2 and 1/1 MOA lines
-Rings are set for a 900M F-Class target
+Where `input csv` is a section of a ShotMarker shoot.
+
+Ensure a directory called `output` exists.
+
+It will then generate images with dynamic sizes but a min of -300,300 but will expand if required for a stray shot
+
+![example1](output/test1_m.png)
+![example2](output/test1_l.png)
+
+Current it is set for 900m Australian F-Class targets
