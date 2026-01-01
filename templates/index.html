@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPlotShotMarker - Upload CSV</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>PyPlotShotMarker</h1>
+            <p>Upload your shooting data CSV to generate target plots</p>
+        </header>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message error">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <main>
+            <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data" class="upload-form">
+                <div class="form-group">
+                    <label for="file">CSV File</label>
+                    <input type="file" id="file" name="file" accept=".csv" required>
+                    <small>Select a CSV file with shooting data</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="distance">Distance (meters)</label>
+                    <select id="distance" name="distance" required>
+                        <option value="300">300m</option>
+                        <option value="500">500m</option>
+                        <option value="600" selected>600m</option>
+                        <option value="700">700m</option>
+                        <option value="800">800m</option>
+                        <option value="900">900m</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <small>Plot size set to 0 will use 300x300 at the smallest and will grow to the size requird if there are shots outside of this</small>
+                    <br>
+                    <div class="form-group">
+                        <label for="x_offset">Plot size (mm)</label>
+                        <input type="number" id="x_offset" name="x_offset" value="0" step="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="y_offset">Plot size (mm)</label>
+                        <input type="number" id="y_offset" name="y_offset" value="0" step="1">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Generate Plots</button>
+            </form>
+        </main>
+
+        <footer>
+            <p>Upload a CSV file with columns: time, tags, id, score, temp C, x mm, y mm</p>
+        </footer>
+    </div>
+</body>
+</html>

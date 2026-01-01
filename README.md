@@ -1,12 +1,44 @@
 # pyPlotShotMarker
 
-## Improved script
+A web application and CLI tool for visualizing shooting target data from ShotMarker CSV files.
+
+## Web Application
+
+### Running Locally
+
+```bash
+pip install -r requirements.txt
+python app.py
+```
+
+Then visit http://localhost:8099 in your browser.
+
+### Running with Docker
+
+```bash
+docker build -t pyplotshotmarker .
+docker run -p 8099:8099 pyplotshotmarker
+```
+
+Then visit http://localhost:8099 in your browser.
+
+### Using the Web Interface
+
+1. Upload your ShotMarker CSV file
+2. Select the shooting distance (300-900m)
+3. Optionally set X/Y size in millimeters
+4. Click "Generate Plots" to view and download your target plots
+
+![webIndex](doco/web1.png)
+![webPlot](doco/web2.png)
+
+## Command Line Interface
 
 ```bash
 python3 pyPlotShotMarker.py
 Usage: pyPlotShotMarker.py [-h] --prefix PREFIX --distance DISTANCE [--x X] [--y Y] filename
 
-python3 pyPlotShotMarker.py <input csv> --prefix test1
+python3 pyPlotShotMarker.py <input csv> --prefix test1 --distance 600
 
 python3 pyPlotShotMarker.py <input csv> --distance 900 --prefix test2
 
@@ -19,8 +51,8 @@ Ensure a directory called `output` exists.
 
 It will then generate images with dynamic sizes but a min of -300,300 but will expand if required for a stray shot
 
-![example1](output/test_git_l.png)
-![example2](output/test_git_m.png)
+![example1](output/exampleL.png)
+![example2](output/exampleM.png)
 
 It will calculate the extreme spread between scoring shots.
 

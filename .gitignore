@@ -2,5 +2,6 @@ output/.DS_Store
 *pyc
 __pycache__/
 output/*png
-!output/test_git_l.png
-!output/test_git_m.png
+.vscode/
+!output/exampleL.png
+!output/exampleM.png

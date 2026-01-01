@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyPlotShotMarker - Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Shooting Plots - {{ distance }}m</h1>
+            <p>Your target plots have been generated</p>
+        </header>
+
+        <main class="results">
+            <div class="plot-section">
+                <h2>Left Target</h2>
+                <img src="/{{ left_plot }}" alt="Left Target Plot" class="plot-image">
+                <a href="{{ url_for('download', filename=left_plot) }}" class="btn-download" download>Download Left Plot</a>
+            </div>
+
+            <div class="plot-section">
+                <h2>Middle Target</h2>
+                <img src="/{{ middle_plot }}" alt="Middle Target Plot" class="plot-image">
+                <a href="{{ url_for('download', filename=middle_plot) }}" class="btn-download" download>Download Middle Plot</a>
+            </div>
+
+            <div class="plot-section">
+                <h2>Right Target</h2>
+                <img src="/{{ right_plot }}" alt="Right Target Plot" class="plot-image">
+                <a href="{{ url_for('download', filename=right_plot) }}" class="btn-download" download>Download Right Plot</a>
+            </div>
+
+            <div class="actions">
+                <a href="{{ url_for('index') }}" class="btn-primary">Upload Another CSV</a>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

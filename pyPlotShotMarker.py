@@ -4,6 +4,8 @@ from typing import Dict, Tuple, Optional
 
 import argparse
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')  # Set backend before importing pyplot
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 from matplotlib.patches import Circle
@@ -27,6 +29,12 @@ class CLIArgs:
 
 
 def parse_args() -> CLIArgs:
+    """
+    Parse the command-line arguments and return a CLIArgs object.
+    
+    :return: Description
+    :rtype: CLIArgs
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument("filename", help="The csv file to process")
     parser.add_argument("--prefix", required=True, help="Prefix for the output files")
@@ -197,22 +205,46 @@ def save_plot(df: pd.DataFrame, name: str, target: Dict[str, float], moa: float,
     plt.close(fig)
 
 
-def main():
-    args = parse_args()
-    cfg = dist_config(args.distance)
-    if cfg is None:
-        print("Unsupported distance:", args.distance)
-        return
+def generate_plots(csv_path: str, prefix: str, distance: int, x: int = 0, y: int = 0) -> Tuple[str, str, str]:
+    """
+    Generate shooting plots from a CSV file.
 
-    df = load_dataframe(args.filename)
+    :param csv_path: Path to the CSV file to process
+    :param prefix: Prefix for the output files
+    :param distance: Distance in meters (300, 500, 600, 700, 800, 900)
+    :param x: X offset in mm (default: 0)
+    :param y: Y offset in mm (default: 0)
+    :return: Tuple of paths to the three generated plot files (left, middle, right)
+    :raises ValueError: If distance is unsupported
+    """
+    cfg = dist_config(distance)
+    if cfg is None:
+        raise ValueError(f"Unsupported distance: {distance}")
+
+    df = load_dataframe(csv_path)
     left_df, middle_df, right_df = split_by_id(df)
 
-    out_base = f"output/{args.prefix}"
+    out_base = f"output/{prefix}"
+    left_plot = out_base + "_l.png"
+    middle_plot = out_base + "_m.png"
+    right_plot = out_base + "_r.png"
 
-    save_plot(left_df, out_base + "_l.png", cfg.target, cfg.moa, args.distance, args.x, args.y)
-    save_plot(middle_df, out_base + "_m.png", cfg.target, cfg.moa, args.distance, args.x, args.y)
-    save_plot(right_df, out_base + "_r.png", cfg.target, cfg.moa, args.distance, args.x, args.y)
+    save_plot(left_df, left_plot, cfg.target, cfg.moa, distance, x, y)
+    save_plot(middle_df, middle_plot, cfg.target, cfg.moa, distance, x, y)
+    save_plot(right_df, right_plot, cfg.target, cfg.moa, distance, x, y)
+
+    return left_plot, middle_plot, right_plot
+
+
+def main():
+    args = parse_args()
+    try:
+        generate_plots(args.filename, args.prefix, args.distance, args.x, args.y)
+    except ValueError as e:
+        print(str(e))
+        return
 
 
 if __name__ == "__main__":
     main()
+
