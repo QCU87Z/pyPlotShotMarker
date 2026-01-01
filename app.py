@@ -10,7 +10,8 @@ app.secret_key = 'your-secret-key-change-in-production'
 
 UPLOAD_FOLDER = 'static/uploads'
 OUTPUT_FOLDER = 'output'
-MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB
+MAX_CONTENT_LENGTH = 100 * 1024  # 100 KB
+MAX_FILE_SIZE = 100 * 1024  # 100 KB
 ALLOWED_EXTENSIONS = {'.csv'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -24,6 +25,13 @@ os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 def allowed_file(filename):
     return os.path.splitext(filename)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.errorhandler(413)
+def too_large(e):
+    """Handle file too large error from Flask's MAX_CONTENT_LENGTH"""
+    flash(f'File too large. Maximum size is {MAX_FILE_SIZE // 1024} KB.')
+    return redirect(url_for('index'))
 
 
 @app.route('/')
@@ -46,6 +54,33 @@ def upload():
 
     if not allowed_file(file.filename):
         flash('Invalid file type. Please upload a CSV file.')
+        return redirect(url_for('index'))
+
+    # Check file size by reading content
+    file.seek(0, os.SEEK_END)
+    file_size = file.tell()
+    file.seek(0)  # Reset to beginning
+
+    if file_size > MAX_FILE_SIZE:
+        flash(f'File too large. Maximum size is {MAX_FILE_SIZE // 1024} KB.')
+        return redirect(url_for('index'))
+
+    if file_size == 0:
+        flash('File is empty.')
+        return redirect(url_for('index'))
+
+    # Validate CSV content by checking first line
+    try:
+        first_line = file.stream.readline().decode('utf-8')
+        file.seek(0)  # Reset to beginning
+
+        # Check if it looks like a CSV (has commas)
+        if ',' not in first_line:
+            flash('Invalid CSV format. File must contain comma-separated values.')
+            return redirect(url_for('index'))
+
+    except UnicodeDecodeError:
+        flash('Invalid file encoding. Please ensure the file is a text CSV.')
         return redirect(url_for('index'))
 
     # Get form parameters
