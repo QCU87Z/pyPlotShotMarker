@@ -22,7 +22,9 @@ It will then generate images with dynamic sizes but a min of -300,300 but will e
 ![example1](output/test_git_l.png)
 ![example2](output/test_git_m.png)
 
-Current it is set for 900m Australian F-Class targets
+It will calculate the extreme spread between scoring shots.
+
+It will calculate the Centroid (math center) and Meadian (adjusting for outliers) centers
 
 ### Example input csv
 
