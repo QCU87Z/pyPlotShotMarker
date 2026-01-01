@@ -1,0 +1,13 @@
+time,tags,id,score,temp C,x mm,y mm
+11:08.5,sighter/incomplete,RS1,4,21,231,-249
+11:11.2,sighter,RS2,5,20,-148,63
+11:13.3,incomplete,R1,6,20,-64,-65
+11:15.5,incomplete,R2,6,20,76,35
+11:17.3,incomplete,R3,6,20,42,56
+11:21.4,,R4,X,21,43,-46
+11:24.2,,R5,X,21,15,28
+11:26.4,incomplete,R6,6,21,48,-108
+11:29.5,incomplete,R7,5,21,58,-121
+11:31.6,incomplete,R8,5,21,144,49
+11:34.5,,R9,5,20,-13,180
+11:36.5,incomplete,R10,6,20,9,124

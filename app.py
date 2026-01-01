@@ -120,7 +120,12 @@ def upload():
         # Clean up uploaded CSV
         os.remove(upload_path)
 
-        # Render results page
+        # Check if at least one plot was generated
+        if not any([left_plot, middle_plot, right_plot]):
+            flash('No valid shooting data found in the CSV file.')
+            return redirect(url_for('index'))
+
+        # Render results page (only pass non-None plots)
         return render_template(
             'results.html',
             left_plot=left_plot,

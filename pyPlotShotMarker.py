@@ -205,7 +205,7 @@ def save_plot(df: pd.DataFrame, name: str, target: Dict[str, float], moa: float,
     plt.close(fig)
 
 
-def generate_plots(csv_path: str, prefix: str, distance: int, x: int = 0, y: int = 0) -> Tuple[str, str, str]:
+def generate_plots(csv_path: str, prefix: str, distance: int, x: int = 0, y: int = 0) -> Tuple[Optional[str], Optional[str], Optional[str]]:
     """
     Generate shooting plots from a CSV file.
 
@@ -214,7 +214,7 @@ def generate_plots(csv_path: str, prefix: str, distance: int, x: int = 0, y: int
     :param distance: Distance in meters (300, 500, 600, 700, 800, 900)
     :param x: X offset in mm (default: 0)
     :param y: Y offset in mm (default: 0)
-    :return: Tuple of paths to the three generated plot files (left, middle, right)
+    :return: Tuple of paths to the three generated plot files (left, middle, right). None if no data for that target.
     :raises ValueError: If distance is unsupported
     """
     cfg = dist_config(distance)
@@ -225,13 +225,23 @@ def generate_plots(csv_path: str, prefix: str, distance: int, x: int = 0, y: int
     left_df, middle_df, right_df = split_by_id(df)
 
     out_base = f"output/{prefix}"
-    left_plot = out_base + "_l.png"
-    middle_plot = out_base + "_m.png"
-    right_plot = out_base + "_r.png"
 
-    save_plot(left_df, left_plot, cfg.target, cfg.moa, distance, x, y)
-    save_plot(middle_df, middle_plot, cfg.target, cfg.moa, distance, x, y)
-    save_plot(right_df, right_plot, cfg.target, cfg.moa, distance, x, y)
+    # Only generate plots for non-empty dataframes
+    left_plot = None
+    middle_plot = None
+    right_plot = None
+
+    if not left_df.empty:
+        left_plot = out_base + "_l.png"
+        save_plot(left_df, left_plot, cfg.target, cfg.moa, distance, x, y)
+
+    if not middle_df.empty:
+        middle_plot = out_base + "_m.png"
+        save_plot(middle_df, middle_plot, cfg.target, cfg.moa, distance, x, y)
+
+    if not right_df.empty:
+        right_plot = out_base + "_r.png"
+        save_plot(right_df, right_plot, cfg.target, cfg.moa, distance, x, y)
 
     return left_plot, middle_plot, right_plot
 
